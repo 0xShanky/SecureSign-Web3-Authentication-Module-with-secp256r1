@@ -1,0 +1,23 @@
+[profile.default]
+src = "contracts"
+out = "out"
+libs = "lib"
+solc = "0.8.19"
+optimizer = true
+optimizer_runs = 200
+via_ir = false
+verbosity = 2
+fuzz = { runs = 256 }
+invariant = { runs = 256, depth = 15, fail_on_revert = false, call_override = false }
+fs_permissions = [{ access = "read", path = "./" }]
+
+[profile.ci]
+fuzz = { runs = 10000 }
+invariant = { runs = 1000, depth = 15 }
+
+[rpc_endpoints]
+sepolia = "https://sepolia.infura.io/v3/${INFURA_API_KEY}"
+anvil = "http://localhost:8545"
+
+[etherscan]
+sepolia = { key = "${ETHERSCAN_API_KEY}" }

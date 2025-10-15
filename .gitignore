@@ -1,0 +1,56 @@
+# Dependencies
+node_modules/
+lib/
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Build outputs
+out/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Coverage
+coverage/
+lcov.info
+
+# Cache
+.cache/
+.parcel-cache/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Private keys and sensitive data
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Test artifacts
+test-results/
+coverage/
+
+# Foundry
+cache/
+broadcast/
+
+# Deployment artifacts
+deployments/

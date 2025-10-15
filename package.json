@@ -1,0 +1,53 @@
+{
+    "name": "securesign-web3-auth",
+    "version": "1.0.0",
+    "description": "Web3 Authentication Module with secp256r1 cryptography",
+    "main": "index.js",
+    "scripts": {
+        "dev": "npx http-server frontend -p 3000 -c-1",
+        "build": "npm run build:contracts && npm run build:frontend",
+        "build:contracts": "forge build",
+        "build:frontend": "echo 'Frontend build complete'",
+        "test": "forge test",
+        "test:coverage": "forge coverage",
+        "test:gas": "forge test --gas-report",
+        "test:local": "forge script scripts/TestLocal.s.sol --rpc-url anvil --broadcast",
+        "test:complete": "forge script scripts/TestComplete.s.sol --rpc-url anvil --broadcast",
+        "deploy:sepolia": "forge script scripts/Deploy.s.sol --rpc-url sepolia --broadcast --verify",
+        "anvil": "anvil --hardfork shanghai",
+        "anvil:fusaka": "anvil --hardfork shanghai --prestate prestate.json",
+        "clean": "forge clean && rm -rf out lib cache broadcast",
+        "install:foundry": "forge install",
+        "lint": "forge fmt",
+        "lint:check": "forge fmt --check"
+    },
+    "keywords": [
+        "web3",
+        "authentication",
+        "secp256r1",
+        "elliptic-curve",
+        "cryptography",
+        "webauthn",
+        "solidity",
+        "foundry",
+        "ethereum"
+    ],
+    "author": "SecureSign Team",
+    "license": "MIT",
+    "devDependencies": {
+        "http-server": "^14.1.1"
+    },
+    "dependencies": {
+        "ethers": "^6.8.1",
+        "noble-curves": "^1.3.0",
+        "noble-hashes": "^1.3.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/your-org/securesign-web3-auth.git"
+    },
+    "bugs": {
+        "url": "https://github.com/your-org/securesign-web3-auth/issues"
+    },
+    "homepage": "https://github.com/your-org/securesign-web3-auth#readme"
+}

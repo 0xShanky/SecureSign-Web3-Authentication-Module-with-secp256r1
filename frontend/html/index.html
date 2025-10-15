@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureSign - Web3 Authentication Demo</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🔐 SecureSign</h1>
+            <p>Web3 Authentication with secp256r1 Cryptography</p>
+        </header>
+
+        <main class="main">
+            <!-- Connection Status -->
+            <div class="status-card" id="connectionStatus">
+                <h3>Connection Status</h3>
+                <div class="status-item">
+                    <span class="label">Wallet:</span>
+                    <span class="value" id="walletAddress">Not Connected</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">Network:</span>
+                    <span class="value" id="networkName">Unknown</span>
+                </div>
+                <div class="status-item">
+                    <span class="label">Contract:</span>
+                    <span class="value" id="contractAddress">Not Deployed</span>
+                </div>
+            </div>
+
+            <!-- Authentication Section -->
+            <div class="auth-section">
+                <div class="tab-container">
+                    <button class="tab-button active" data-tab="register">Register</button>
+                    <button class="tab-button" data-tab="login">Login</button>
+                    <button class="tab-button" data-tab="verify">Verify</button>
+                </div>
+
+                <!-- Registration Tab -->
+                <div class="tab-content active" id="register">
+                    <div class="card">
+                        <h3>🔑 Generate New Key Pair</h3>
+                        <p>Create a new secp256r1 key pair and register with the smart contract.</p>
+
+                        <div class="form-group">
+                            <label for="registerPassword">Password:</label>
+                            <input type="password" id="registerPassword"
+                                placeholder="Enter password for key encryption">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="registerConfirmPassword">Confirm Password:</label>
+                            <input type="password" id="registerConfirmPassword" placeholder="Confirm password">
+                        </div>
+
+                        <button class="btn btn-primary" id="generateKeysBtn">Generate Keys</button>
+
+                        <div class="result" id="registerResult" style="display: none;">
+                            <h4>Registration Successful!</h4>
+                            <div class="key-info">
+                                <div class="info-item">
+                                    <span class="label">Public Key:</span>
+                                    <span class="value" id="publicKeyDisplay"></span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Address:</span>
+                                    <span class="value" id="addressDisplay"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Login Tab -->
+                <div class="tab-content" id="login">
+                    <div class="card">
+                        <h3>🔓 Authenticate</h3>
+                        <p>Sign in using your encrypted private key.</p>
+
+                        <div class="form-group">
+                            <label for="loginAddress">Address:</label>
+                            <select id="loginAddress">
+                                <option value="">Select your address</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="loginPassword">Password:</label>
+                            <input type="password" id="loginPassword" placeholder="Enter your password">
+                        </div>
+
+                        <button class="btn btn-primary" id="loginBtn">Sign In</button>
+
+                        <div class="result" id="loginResult" style="display: none;">
+                            <h4>Authentication Successful!</h4>
+                            <div class="auth-info">
+                                <div class="info-item">
+                                    <span class="label">Status:</span>
+                                    <span class="value success">Authenticated</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Session:</span>
+                                    <span class="value" id="sessionInfo"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Verification Tab -->
+                <div class="tab-content" id="verify">
+                    <div class="card">
+                        <h3>✅ Verify Signature</h3>
+                        <p>Verify a signature on the blockchain using the smart contract.</p>
+
+                        <div class="form-group">
+                            <label for="verifyMessage">Message:</label>
+                            <textarea id="verifyMessage" placeholder="Enter message to sign and verify"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="verifyAddress">Your Address:</label>
+                            <select id="verifyAddress">
+                                <option value="">Select your address</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="verifyPassword">Password:</label>
+                            <input type="password" id="verifyPassword" placeholder="Enter your password">
+                        </div>
+
+                        <button class="btn btn-primary" id="signAndVerifyBtn">Sign & Verify</button>
+
+                        <div class="result" id="verifyResult" style="display: none;">
+                            <h4>Verification Result</h4>
+                            <div class="verify-info">
+                                <div class="info-item">
+                                    <span class="label">Signature:</span>
+                                    <span class="value" id="signatureDisplay"></span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">On-chain Verification:</span>
+                                    <span class="value" id="onchainResult"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Management Section -->
+            <div class="key-management">
+                <div class="card">
+                    <h3>🗝️ Key Management</h3>
+                    <div class="key-actions">
+                        <button class="btn btn-secondary" id="exportKeysBtn">Export Keys</button>
+                        <button class="btn btn-secondary" id="importKeysBtn">Import Keys</button>
+                        <button class="btn btn-danger" id="clearKeysBtn">Clear All Keys</button>
+                    </div>
+
+                    <div class="stored-keys" id="storedKeys">
+                        <h4>Stored Keys</h4>
+                        <div class="keys-list" id="keysList">
+                            <!-- Keys will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Technical Information -->
+            <div class="tech-info">
+                <div class="card">
+                    <h3>🔬 Technical Details</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="label">Curve:</span>
+                            <span class="value">secp256r1 (P-256)</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Encryption:</span>
+                            <span class="value">AES-GCM</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Key Derivation:</span>
+                            <span class="value">PBKDF2</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Hash Function:</span>
+                            <span class="value">SHA-256</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>SecureSign Demo - Web3 Authentication with secp256r1</p>
+            <p>Built with ❤️ for Web3 developers</p>
+        </footer>
+    </div>
+
+    <!-- Hidden file input for key import -->
+    <input type="file" id="importFileInput" accept=".json" style="display: none;">
+
+    <!-- Scripts -->
+    <script src="../js/secp256r1.js"></script>
+    <script src="../js/keyManager.js"></script>
+    <script src="../js/app.js"></script>
+</body>
+
+</html>
